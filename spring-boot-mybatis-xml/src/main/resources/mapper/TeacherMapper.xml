@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.neo.mapper.TeacherMapper">
+    <resultMap id="TeacherStudentMap" type="com.neo.domain.Teacher">
+        <id property="tId" column="t_id"/>
+        <result property="tName" column="t_name"/>
+        <collection property="tStudent" ofType="com.neo.domain.Student">
+            <id property="sId" column="s_id"/>
+            <result property="sName" column="s_name"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryTeacherList" resultMap="TeacherStudentMap">
+        SELECT t.t_id, t.t_name, s.s_id, s.s_name
+        FROM teacher t
+                 left join teacher_student ts on t.t_id = ts.t_id
+                 left join student s on ts.s_id = s.s_id
+    </select>
+</mapper>
