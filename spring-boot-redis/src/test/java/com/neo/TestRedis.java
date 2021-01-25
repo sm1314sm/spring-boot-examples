@@ -11,6 +11,8 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
@@ -35,6 +37,12 @@ public class TestRedis {
     public void testString() {
         redisUtils.set("string", "AAA", 100l, TimeUnit.SECONDS);
         redisUtils.set("Object", new User("aa@126.com", "aa", "aa123456", "aa", "123"));
+        List<User> list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            User user = new User("aa@126.com", "aa", "aa123456", "aa", "123");
+            list.add(user);
+        }
+        redisUtils.set("list", list);
         System.out.println(redisUtils.get("string"));
         System.out.println(redisUtils.get("Object"));
     }

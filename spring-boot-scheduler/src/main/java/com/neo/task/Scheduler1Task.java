@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Component
 public class Scheduler1Task {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy MM dd HH:mm:ss");
 
     /**
      * 1.*表示匹配该域的任意值,假如在Minutes域使用*, 即表示每分钟都会触发事件
@@ -22,7 +22,7 @@ public class Scheduler1Task {
      * 5.,表示列出枚举值值。例如：在Minutes域使用5,20，则意味着在5和20分每分钟触发一次
      * 6.corn表达式一共由七个子表达式组成，前六个必填，最后一个可填，子表达式之间用空格隔开
      */
-    @Scheduled(cron = "*/6 * * 20 * ?")
+    @Scheduled(cron = "*/6 * 17 25 * ?")
     private void process() {
         System.out.println(Thread.currentThread().getName() + "现在时间：" + dateFormat.format(new Date()));
     }
