@@ -12,26 +12,6 @@ public class ThreadUtil {
     private static final Logger logger = LoggerFactory.getLogger(ThreadUtil.class);
 
     /**
-     * 停止线程池
-     */
-    public static void shutdownAndAwaitTermination(ExecutorService pool) {
-        if (pool != null && !pool.isShutdown()) {
-            pool.shutdown();
-            try {
-                if (!pool.awaitTermination(120, TimeUnit.SECONDS)) {
-                    pool.shutdownNow();
-                    if (!pool.awaitTermination(120, TimeUnit.SECONDS)) {
-                        logger.info("Pool did not terminate");
-                    }
-                }
-            } catch (InterruptedException ie) {
-                pool.shutdownNow();
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
-
-    /**
      * 打印线程异常信息
      */
     public static void printException(Runnable r, Throwable t) {
