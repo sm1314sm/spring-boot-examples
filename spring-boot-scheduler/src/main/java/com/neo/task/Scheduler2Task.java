@@ -1,5 +1,6 @@
 package com.neo.task;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ public class Scheduler2Task {
     /**
      * 上任务开始时开始计算时间
      */
+    @Async
     @Scheduled(fixedRate = 1000)
     public void reportCurrentTime() {
         System.out.println(Thread.currentThread().getName() + "现在时间：" + simpleDateFormat1.format(new Date()));
@@ -26,6 +28,7 @@ public class Scheduler2Task {
     /**
      * 上任务结束后开始计算时间
      */
+    @Async
     @Scheduled(fixedDelay = 1000)
     public void delayCurrentTime() {
         System.out.println(Thread.currentThread().getName() + "现在时间：" + simpleDateFormat2.format(new Date()));
