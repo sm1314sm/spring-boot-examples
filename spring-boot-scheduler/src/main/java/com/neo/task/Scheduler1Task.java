@@ -23,8 +23,8 @@ public class Scheduler1Task {
      * 5.,表示列出枚举值值。例如：在Minutes域使用5,20，则意味着在5和20分每分钟触发一次
      * 6.corn表达式一共由七个子表达式组成，前六个必填，最后一个可填，子表达式之间用空格隔开
      */
-    @Async("scheduledExecutorService")
-    @Scheduled(cron = "*/6 * 17 26 * ?")
+    @Async
+    @Scheduled(cron = "*/6 * * * * ?")
     public void process() {
         System.out.println(Thread.currentThread().getName() + "现在时间：" + dateFormat.format(new Date()));
     }
