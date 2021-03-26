@@ -25,7 +25,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     /**
      * Redis配置key的生成方式
      */
-    @Bean()
+    @Bean
     public KeyGenerator keyGenerator() {
         return (target, method, params) -> {
             StringBuilder sb = new StringBuilder();
@@ -80,11 +80,9 @@ public class RedisConfig extends CachingConfigurerSupport {
                 // 设置value为自动转Json的Object
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(template.getValueSerializer()))
                 // 不缓存null
-                .disableCachingNullValues()
-                // 缓存数据保存1小时
-                .entryTtl(Duration.ofHours(1));
+                .disableCachingNullValues();
         RedisCacheManager redisCacheManager = RedisCacheManager.RedisCacheManagerBuilder
-                // Redis 连接工厂
+                // Redis连接工厂
                 .fromConnectionFactory(template.getConnectionFactory())
                 // 缓存配置
                 .cacheDefaults(defaultCacheConfiguration)
