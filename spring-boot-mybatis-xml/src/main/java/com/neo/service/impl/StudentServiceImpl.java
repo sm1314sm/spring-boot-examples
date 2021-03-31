@@ -5,6 +5,7 @@ import com.neo.domain.Student;
 import com.neo.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,5 +17,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> queryStudentList() {
         return studentMapper.queryStudentList();
+    }
+
+    @Override
+    @Transactional
+    public void insertStudent(Student student) {
+        int a = 1 / 0;
+        studentMapper.insertStudent(student);
     }
 }

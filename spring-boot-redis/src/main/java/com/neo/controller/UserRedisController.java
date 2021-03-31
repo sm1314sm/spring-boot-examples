@@ -1,4 +1,4 @@
-package com.neo.web;
+package com.neo.controller;
 
 import com.neo.domain.User;
 import com.neo.utils.RedisUtil;

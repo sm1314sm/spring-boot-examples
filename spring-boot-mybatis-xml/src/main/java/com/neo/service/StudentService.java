@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface StudentService {
     List<Student> queryStudentList();
+
+    void insertStudent(Student student) throws Exception;
 }

@@ -16,4 +16,9 @@
                  left join teacher_student ts on s.s_id = ts.s_id
                  left join teacher t on ts.t_id = t.t_id
     </select>
+
+    <insert id="insertStudent">
+        insert into student(s_name)
+        values (#{sName})
+    </insert>
 </mapper>
