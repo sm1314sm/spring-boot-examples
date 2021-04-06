@@ -1,92 +1,139 @@
 package com.neo.config;
 
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import com.neo.constants.Constants;
+import com.neo.shiro.realm.MyRealm;
+import org.apache.commons.io.IOUtils;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.config.ConfigurationException;
+import org.apache.shiro.io.ResourceUtils;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
+import org.springframework.context.annotation.DependsOn;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
 
 @Configuration
 public class ShiroConfig {
+    /**
+     * 登录地址
+     */
+    @Value("${shiro.user.loginUrl}")
+    private String loginUrl;
+
+    /**
+     * 权限认证失败地址
+     */
+    @Value("${shiro.user.unauthorizedUrl}")
+    private String unauthorizedUrl;
+
+    /**
+     * 缓存管理器 使用Ehcache实现
+     */
+    @Bean
+    public EhCacheManager getEhCacheManager() {
+        net.sf.ehcache.CacheManager cacheManager = net.sf.ehcache.CacheManager.getCacheManager("shiro");
+        EhCacheManager em = new EhCacheManager();
+        if (cacheManager == null) {
+            em.setCacheManager(new net.sf.ehcache.CacheManager(getCacheManagerConfigFileInputStream()));
+            return em;
+        } else {
+            em.setCacheManager(cacheManager);
+            return em;
+        }
+    }
+
+    /**
+     * 返回配置文件流 避免ehcache配置文件一直被占用，无法完全销毁项目重新部署
+     */
+    protected InputStream getCacheManagerConfigFileInputStream() {
+        String configFile = "classpath:ehcache/ehcache-shiro.xml";
+        InputStream inputStream = null;
+        try {
+            inputStream = ResourceUtils.getInputStreamForPath(configFile);
+            byte[] b = IOUtils.toByteArray(inputStream);
+            InputStream in = new ByteArrayInputStream(b);
+            return in;
+        } catch (IOException e) {
+            throw new ConfigurationException("Unable to obtain input stream for cacheManagerConfigFile [" + configFile + "]", e);
+        } finally {
+            IOUtils.closeQuietly(inputStream);
+        }
+    }
+
+    /**
+     * 自定义Realm
+     */
+    @Bean
+    public MyRealm myRealm(EhCacheManager cacheManager) {
+        MyRealm myRealm = new MyRealm();
+        myRealm.setAuthorizationCacheName(Constants.SYS_AUTH_CACHE);
+        myRealm.setCacheManager(cacheManager);
+        return myRealm;
+    }
+
+    /**
+     * 自定义安全管理器
+     */
+    @Bean
+    public SecurityManager securityManager(MyRealm myRealm) {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        // 设置Realm
+        securityManager.setRealm(myRealm);
+        // 注入缓存管理器
+        securityManager.setCacheManager(getEhCacheManager());
+        return securityManager;
+    }
+
+    /**
+     * Shiro过滤器配置
+     */
     @Bean
     public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
-        System.out.println("ShiroConfiguration.shirFilter()");
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        // Shiro的核心安全接口,这个属性是必须的
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        //拦截器
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
-        // 配置不会被拦截的链接 顺序判断
-        filterChainDefinitionMap.put("/static/**", "anon");
-        //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
-        filterChainDefinitionMap.put("/logout", "logout");
-        //<!-- 过滤链定义，从上向下顺序执行，一般将/**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
-        //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
+        // 身份认证失败，则跳转到登录页面的配置
+        shiroFilterFactoryBean.setLoginUrl(loginUrl);
+        // 权限认证失败，则跳转到指定页面
+        shiroFilterFactoryBean.setUnauthorizedUrl(unauthorizedUrl);
+        // 拦截器
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        // 不需要拦截的访问
+        filterChainDefinitionMap.put("/login", "anon");
+        // authc:所有url都必须认证通过才可以访问 anon:所有url都都可以匿名访问
         filterChainDefinitionMap.put("/**", "authc");
-        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-        shiroFilterFactoryBean.setLoginUrl("/login");
-        // 登录成功后要跳转的链接
-        shiroFilterFactoryBean.setSuccessUrl("/index");
-        //未授权界面;
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
 
     /**
-     * 凭证匹配器
-     * 由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了
+     * 开启Shiro的注解
      */
     @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher() {
-        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于md5(md5(""));
-        return hashedCredentialsMatcher;
-    }
-
-    @Bean
-    public MyRealm myShiroRealm() {
-        MyRealm myShiroRealm = new MyRealm();
-        myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        return myShiroRealm;
-    }
-
-
-    @Bean
-    public SecurityManager securityManager() {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(myShiroRealm());
-        return securityManager;
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator creator = new DefaultAdvisorAutoProxyCreator();
+        creator.setProxyTargetClass(true);
+        return creator;
     }
 
     /**
-     * 开启shiro aop注解支持.
-     * 使用代理方式 所以需要开启代码支持
+     * Shiro注解通知器
      */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
-    }
-
-    @Bean(name = "simpleMappingExceptionResolver")
-    public SimpleMappingExceptionResolver
-    createSimpleMappingExceptionResolver() {
-        SimpleMappingExceptionResolver r = new SimpleMappingExceptionResolver();
-        Properties mappings = new Properties();
-        mappings.setProperty("DatabaseException", "databaseError");//数据库异常处理
-        mappings.setProperty("UnauthorizedException", "403");
-        r.setExceptionMappings(mappings);
-        r.setDefaultErrorView("error");
-        r.setExceptionAttribute("ex");
-        return r;
     }
 }

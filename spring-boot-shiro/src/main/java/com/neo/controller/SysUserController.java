@@ -5,32 +5,31 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/userInfo")
-public class UserInfoController {
+public class SysUserController {
     /**
      * 用户查询
      */
     @RequestMapping("/userList")
-    @RequiresPermissions("userInfo:view")//权限管理;
+    @RequiresPermissions("userInfo:view")
     public String userInfo(){
-        return "userInfo";
+        return "/userInfo";
     }
 
     /**
      * 用户添加
      */
     @RequestMapping("/userAdd")
-    @RequiresPermissions("userInfo:add")//权限管理;
+    @RequiresPermissions("userInfo:add")
     public String userInfoAdd(){
-        return "userInfoAdd";
+        return "/userInfoAdd";
     }
 
     /**
      * 用户删除
      */
     @RequestMapping("/userDel")
-    @RequiresPermissions("userInfo:del")//权限管理;
+    @RequiresPermissions("userInfo:del")
     public String userDel(){
-        return "userInfoDel";
+        return "/userInfoDel";
     }
 }

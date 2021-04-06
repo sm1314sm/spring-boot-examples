@@ -1,24 +1,34 @@
 package com.neo.domain;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-public class SysPermission implements Serializable {
-    @Id
-    @GeneratedValue
-    private Integer id;//主键.
-    private String name;//名称.
-    @Column(columnDefinition="enum('menu','button')")
-    private String resourceType;//资源类型，[menu|button]
-    private String url;//资源路径.
-    private String permission; //权限字符串,menu例子：role:*，button例子：role:create,role:update,role:delete,role:view
-    private Long parentId; //父编号
-    private String parentIds; //父编号列表
+public class SysPermission {
+    // 主键
+    private Integer id;
+
+    // 名称
+    private String name;
+
+    // 资源类型
+    private String resourceType;
+
+    // 资源路径
+    private String url;
+
+    //权限字符串
+    private String permission;
+
+    // 父编号
+    private Long parentId;
+
+    // 父编号列表
+    private String parentIds;
+
+    // 是否可用
     private Boolean available = Boolean.FALSE;
-    @ManyToMany
-    @JoinTable(name="SysRolePermission",joinColumns={@JoinColumn(name="permissionId")},inverseJoinColumns={@JoinColumn(name="roleId")})
+
+    // 角色 -- 权限关系定义
     private List<SysRole> roles;
 
     public Integer getId() {

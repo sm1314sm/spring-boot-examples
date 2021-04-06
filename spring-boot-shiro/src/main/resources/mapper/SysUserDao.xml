@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neo.dao.SysUserDao">
+    <!--通过username查找用户信息-->
+    <select id="findByUsername" resultType="sysUser">
+        select
+        id, name, password, salt, state, username
+        from sys_user
+        <where>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+        </where>
+    </select>
+
+    <!--通过userId查找角色组信息-->
+    <select id="findRoleByUserId" resultType="sysRole">
+        select
+        r.id, r.available, r.description, r.role
+        from sys_role r
+        left join sys_user_role ur on r.id = ur.role_id
+        left join sys_user u on ur.user_id = u.id
+        <where>
+            <if test="userId != null and userId != ''">
+                and u.id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <!--通过roleId查找权限组信息-->
+    <select id="findPermissionByRoleId" resultType="sysPermission">
+        select
+        p.id, p.available, p.name, p.parent_id, p.parent_ids, p.permission, p.resource_type, p.url
+        from sys_permission p
+        left join sys_role_permission rp on p.id = rp.permission_id
+        left join sys_role r on rp.role_id = r.id
+        <where>
+            <if test="roleId != null and roleId != ''">
+                and r.id = #{roleId}
+            </if>
+        </where>
+    </select>
+</mapper>
