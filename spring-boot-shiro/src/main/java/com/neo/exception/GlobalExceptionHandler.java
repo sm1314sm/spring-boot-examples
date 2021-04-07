@@ -1,6 +1,6 @@
 package com.neo.exception;
 
-import com.neo.core.domain.AjaxResult;
+import com.neo.domain.AjaxResult;
 import com.neo.util.PermissionUtils;
 import com.neo.util.ServletUtils;
 import org.apache.shiro.authz.AuthorizationException;

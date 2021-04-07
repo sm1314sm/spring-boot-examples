@@ -1,4 +1,4 @@
-package com.neo.core.domain;
+package com.neo.domain;
 
 import java.util.HashMap;
 

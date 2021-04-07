@@ -33,14 +33,5 @@
            timeToIdleSeconds="0"
            overflowToDisk="false">
     </cache>
-
-    <!-- 系统会话缓存 -->
-    <cache name="shiro-activeSessionCache"
-           maxElementsInMemory="1000"
-           eternal="false"
-           timeToLiveSeconds="0"
-           timeToIdleSeconds="0"
-           overflowToDisk="false">
-    </cache>
 </ehcache>
 	
