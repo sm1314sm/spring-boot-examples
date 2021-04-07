@@ -20,17 +20,24 @@ import java.util.concurrent.TimeUnit;
 /**
  * 指定默认缓存区
  * 缓存区：key的前缀，与指定的key构成redis的key，如 user::10001
+ * 配置多个就会组合成多个key进行存储
  */
 @CacheConfig(cacheNames = {"one", "two"})
 @RestController
 public class UserRedisController {
     public static final Logger log = LoggerFactory.getLogger(UserRedisController.class);
 
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
-
+    /**
+     * 存储Object类型的value需要序列化
+     */
     @Autowired
     private RedisUtil redisUtils;
+
+    /**
+     * 存储String类型的value不需要序列化
+     */
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 一般在查询中使用，缓存有数据时，从缓存获取。没有数据时，执行方法，并将返回值保存到缓存中
@@ -43,7 +50,6 @@ public class UserRedisController {
     public User getUser(@PathVariable("id") Long id) {
         User user = new User("aa@1262.com", "aa", "aa123456", "aa", "123");
         user.setId(id);
-        System.out.println("若下面没出现“无缓存的时候调用”字样且能打印出数据表示测试成功" + user.toString());
         return user;
     }
 
@@ -56,7 +62,6 @@ public class UserRedisController {
     public User putUser(final User user, @PathVariable("str") String password) {
         UUID uuid = UUID.randomUUID();
         user.setPassword(password + uuid);
-        System.out.println("若下面没出现“无缓存的时候调用”字样且能打印出数据表示测试成功");
         return user;
     }
 
@@ -84,6 +89,7 @@ public class UserRedisController {
             log.info("从缓存获取的数据" + user);
         } else {
             user = new User("youyu@613.com", "不败的求道者", "aa123456", "葛贺祥", "12321");
+            user.setId(Long.parseLong(id));
             //数据插入缓存（set中的参数含义：key值，user对象，缓存存在时间10（long类型），时间单位）
             redisUtils.set(id, user, 10L, TimeUnit.MINUTES);
             log.info("数据插入缓存" + user);
@@ -95,29 +101,19 @@ public class UserRedisController {
      * 根据stringRedisTemplate查询缓存是否存在
      */
     @RequestMapping(value = "/test/{string}")
-    public Boolean test(@PathVariable("string") String testString) {
+    public String test(@PathVariable("string") String testString) {
         //查询缓存中是否存在
-        boolean hasKey = stringRedisTemplate.hasKey(testString);
-        if (hasKey) {
+        String string;
+        if (stringRedisTemplate.hasKey(testString)) {
             //获取缓存
-            Object object = stringRedisTemplate.opsForValue().get(testString);
-            System.out.println(object);
+            string = stringRedisTemplate.opsForValue().get(testString);
+            log.info("从缓存获取的数据" + string);
+        }else{
+            //设置缓存
+            string = UUID.randomUUID().toString();
+            stringRedisTemplate.opsForValue().set(testString, string);
+            log.info("数据插入缓存" + string);
         }
-        return hasKey;
-    }
-
-    /**
-     * 根据RedisTemplate查询缓存是否存在
-     */
-    @RequestMapping(value = "/testNoString/{string}")
-    public Boolean testNoString(@PathVariable("string") String testString) {
-        //查询缓存中是否存在
-        boolean hasKey = redisUtils.exists(testString);
-        if (hasKey) {
-            //获取缓存
-            Object object = redisUtils.get(testString);
-            System.out.println(object);
-        }
-        return hasKey;
+        return string;
     }
 }

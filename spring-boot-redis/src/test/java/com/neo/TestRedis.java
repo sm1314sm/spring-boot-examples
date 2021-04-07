@@ -19,10 +19,10 @@ import java.util.concurrent.TimeUnit;
 @SpringBootTest
 public class TestRedis {
     @Autowired
-    private StringRedisTemplate stringRedisTemplate;
+    private RedisUtil redisUtils;
 
     @Autowired
-    private RedisUtil redisUtils;
+    private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     private RedisCacheManager redisCacheManager;
