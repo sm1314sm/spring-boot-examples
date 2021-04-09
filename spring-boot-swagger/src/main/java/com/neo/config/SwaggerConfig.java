@@ -45,12 +45,8 @@ public class SwaggerConfig {
                 .title("客户管理")
                 //文档介绍
                 .description("客户管理中心 API 2.1.0 操作文档")
-                //服务条款网址
-                .termsOfServiceUrl("http://www.ityouknow.com/")
                 //文档版本
                 .version("2.1.0")
-                //作者的网站和邮箱
-                .contact(new Contact("纯洁的微笑", "http://www.ityouknow.com/", "ityouknow@126.com"))
                 .build();
     }
 }
