@@ -1,5 +1,7 @@
 package com.neo.domain;
 
+import java.util.StringJoiner;
+
 public class User {
     private Long id;
 

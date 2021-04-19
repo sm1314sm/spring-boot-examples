@@ -1,6 +1,6 @@
 package com.neo.controller;
 
-import com.neo.domain.BaseResult;
+import com.neo.domain.Result;
 import com.neo.domain.User;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +40,9 @@ public class UserController {
             @ApiImplicitParam(name = "age", value = "年龄", required = true, dataType = "int", paramType = "query"),
     })
     @PostMapping
-    public BaseResult<User> postUser(@ApiIgnore User user) {
+    public Result<User> postUser(@ApiIgnore User user) {
         users.put(user.getId(), user);
-        return BaseResult.successWithData(user);
+        return Result.successWithData(user);
     }
 
     @ApiOperation(value = "获取用户详细信息", notes = "根据id获取用户详细信息")
@@ -59,12 +59,12 @@ public class UserController {
             @ApiImplicitParam(name = "age", value = "年龄", required = true, dataType = "int", paramType = "query")
     })
     @PutMapping("/{id}")
-    public BaseResult<User> putUser(@PathVariable Long id, @ApiIgnore User user) {
+    public Result<User> putUser(@PathVariable Long id, @ApiIgnore User user) {
         User u = users.get(id);
         u.setName(user.getName());
         u.setAge(user.getAge());
         users.put(id, u);
-        return BaseResult.successWithData(u);
+        return Result.successWithData(u);
     }
 
     @ApiOperation(value = "删除用户详细信息", notes = "根据ID删除用户详细信息")
