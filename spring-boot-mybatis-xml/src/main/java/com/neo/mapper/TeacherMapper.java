@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface TeacherMapper {
     List<Teacher> queryTeacherList();
+
+    void insertTeacher(Teacher teacher);
 }

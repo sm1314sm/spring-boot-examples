@@ -10,6 +10,7 @@ public class Teacher {
     private int tId;
     private String tName;
     private List<Student> tStudent;
+    private Subject subject;
 
     public int gettId() {
         return tId;
@@ -35,12 +36,21 @@ public class Teacher {
         this.tStudent = tStudent;
     }
 
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", Teacher.class.getSimpleName() + "[", "]")
                 .add("tId=" + tId)
                 .add("tName='" + tName + "'")
                 .add("tStudent=" + tStudent)
+                .add("subject=" + subject)
                 .toString();
     }
 }

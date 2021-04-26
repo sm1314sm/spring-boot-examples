@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.neo.mapper.TeacherMapper">
-    <resultMap id="TeacherStudentMap" type="com.neo.domain.Teacher">
+    <resultMap id="TeacherMap" type="com.neo.domain.Teacher">
         <id property="tId" column="t_id"/>
         <result property="tName" column="t_name"/>
-        <collection property="tStudent" ofType="com.neo.domain.Student">
-            <id property="sId" column="s_id"/>
-            <result property="sName" column="s_name"/>
-        </collection>
+        <association property="subject" resultMap="SubjectMap"/>
+        <collection property="tStudent" resultMap="StudentMap"/>
     </resultMap>
 
-    <select id="queryTeacherList" resultMap="TeacherStudentMap">
-        SELECT t.t_id, t.t_name, s.s_id, s.s_name
+    <resultMap id="StudentMap" type="com.neo.domain.Student">
+        <id property="sId" column="s_id"/>
+        <result property="sName" column="s_name"/>
+    </resultMap>
+
+    <resultMap id="SubjectMap" type="com.neo.domain.Subject">
+        <id property="uId" column="u_id"/>
+        <result property="uName" column="u_name"/>
+    </resultMap>
+
+    <select id="queryTeacherList" resultMap="TeacherMap">
+        SELECT t.t_id, t.t_name, s.s_id, s.s_name, u.u_id, u.u_name
         FROM teacher t
                  left join teacher_student ts on t.t_id = ts.t_id
                  left join student s on ts.s_id = s.s_id
+                 left join subject u on t.u_id = u.u_id
     </select>
+
+    <insert id="insertTeacher">
+        insert into teacher(t_name)
+        values (#{tName})
+    </insert>
 </mapper>

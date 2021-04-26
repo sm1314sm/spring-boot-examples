@@ -17,4 +17,11 @@ public class TeacherServiceImpl implements TeacherService {
     public List<Teacher> queryTeacherList() {
         return teacherMapper.queryTeacherList();
     }
+
+    @Override
+    public void insertTeacher(Teacher teacher) {
+        int a = 1 / 0;
+        System.out.println("11");
+        teacherMapper.insertTeacher(teacher);
+    }
 }

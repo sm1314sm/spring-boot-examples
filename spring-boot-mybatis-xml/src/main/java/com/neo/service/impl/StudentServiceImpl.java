@@ -22,7 +22,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional
     public void insertStudent(Student student) {
+        System.out.println("11b");
+        studentMapper.insertStudent(student);
         int a = 1 / 0;
+        System.out.println("11");
         studentMapper.insertStudent(student);
     }
 }
