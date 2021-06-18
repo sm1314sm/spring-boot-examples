@@ -31,7 +31,9 @@ public class MyRealm extends AuthorizingRealm {
     @Autowired
     private SysLoginService sysLoginService;
 
-    /*主要是用来获取权限的*/
+    /**
+     * 主要是用来获取权限的
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
@@ -45,7 +47,9 @@ public class MyRealm extends AuthorizingRealm {
         return authorizationInfo;
     }
 
-    /*主要是用来身份认证的*/
+    /**
+     * 主要是用来身份认证的
+     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;

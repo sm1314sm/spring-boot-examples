@@ -35,7 +35,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor {
      * 获取类型为requiredType的对象
      */
     public static <T> T getBean(Class<T> clz) throws BeansException {
-        T result = (T) beanFactory.getBean(clz);
+        T result = beanFactory.getBean(clz);
         return result;
     }
 }
