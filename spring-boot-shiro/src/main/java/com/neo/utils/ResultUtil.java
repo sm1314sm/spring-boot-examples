@@ -1,11 +1,11 @@
-package com.neo.domain;
+package com.neo.utils;
 
 import java.util.HashMap;
 
 /**
  * 操作消息提醒
  */
-public class AjaxResult extends HashMap<String, Object> {
+public class ResultUtil extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -50,13 +50,13 @@ public class AjaxResult extends HashMap<String, Object> {
     /**
      * 初始化一个新创建的 AjaxResult对象
      */
-    public AjaxResult() {
+    public ResultUtil() {
     }
 
     /**
      * 初始化一个新创建的 AjaxResult对象
      */
-    public AjaxResult(Type type, String msg) {
+    public ResultUtil(Type type, String msg) {
         super.put(CODE_TAG, type.value);
         super.put(MSG_TAG, msg);
     }
@@ -64,7 +64,7 @@ public class AjaxResult extends HashMap<String, Object> {
     /**
      * 初始化一个新创建的 AjaxResult对象
      */
-    public AjaxResult(Type type, String msg, Object data) {
+    public ResultUtil(Type type, String msg, Object data) {
         super.put(CODE_TAG, type.value);
         super.put(MSG_TAG, msg);
         if (data != null) {
@@ -75,56 +75,56 @@ public class AjaxResult extends HashMap<String, Object> {
     /**
      * 返回成功消息
      */
-    public static AjaxResult success() {
-        return AjaxResult.success("操作成功");
+    public static ResultUtil success() {
+        return ResultUtil.success("操作成功");
     }
 
     /**
      * 返回成功数据
      */
-    public static AjaxResult success(Object data) {
-        return AjaxResult.success("操作成功", data);
+    public static ResultUtil success(Object data) {
+        return ResultUtil.success("操作成功", data);
     }
 
     /**
      * 返回成功消息
      */
-    public static AjaxResult success(String msg) {
-        return AjaxResult.success(msg, null);
+    public static ResultUtil success(String msg) {
+        return ResultUtil.success(msg, null);
     }
 
     /**
      * 返回成功消息
      */
-    public static AjaxResult success(String msg, Object data) {
-        return new AjaxResult(Type.SUCCESS, msg, data);
+    public static ResultUtil success(String msg, Object data) {
+        return new ResultUtil(Type.SUCCESS, msg, data);
     }
 
     /**
      * 返回错误消息
      */
-    public static AjaxResult error() {
-        return AjaxResult.error("操作失败");
+    public static ResultUtil error() {
+        return ResultUtil.error("操作失败");
     }
 
     /**
      * 返回错误消息
      */
-    public static AjaxResult error(Object data) {
-        return AjaxResult.error("操作失败", data);
+    public static ResultUtil error(Object data) {
+        return ResultUtil.error("操作失败", data);
     }
 
     /**
      * 返回错误消息
      */
-    public static AjaxResult error(String msg) {
-        return AjaxResult.error(msg, null);
+    public static ResultUtil error(String msg) {
+        return ResultUtil.error(msg, null);
     }
 
     /**
      * 返回错误消息
      */
-    public static AjaxResult error(String msg, Object data) {
-        return new AjaxResult(Type.ERROR, msg, data);
+    public static ResultUtil error(String msg, Object data) {
+        return new ResultUtil(Type.ERROR, msg, data);
     }
 }

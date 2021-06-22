@@ -1,19 +1,15 @@
-package com.neo.util;
+package com.neo.utils;
 
-import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
  * spring工具类 方便在非spring管理环境中获取bean
  */
 @Component
-public final class SpringUtils implements BeanFactoryPostProcessor {
+public final class SpringUtil implements BeanFactoryPostProcessor {
     /**
      * Spring应用上下文环境
      */
@@ -21,7 +17,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor {
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        SpringUtils.beanFactory = beanFactory;
+        SpringUtil.beanFactory = beanFactory;
     }
 
     /**

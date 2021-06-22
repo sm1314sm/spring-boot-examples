@@ -1,21 +1,15 @@
-package com.neo.util;
+package com.neo.utils;
 
 import com.neo.constants.Constants;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 
 /**
  * permission 工具类
  */
-public class PermissionUtils {
-    private static final Logger log = LoggerFactory.getLogger(PermissionUtils.class);
+public class PermissionUtil {
+    private static final Logger log = LoggerFactory.getLogger(PermissionUtil.class);
 
     /**
      * 查看数据的权限
@@ -52,18 +46,18 @@ public class PermissionUtils {
      */
     public static String getMsg(String permissionsStr) {
         String permission = StringUtils.substringBetween(permissionsStr, "[", "]");
-        String msg = MessageUtils.message(PERMISSION, permission);
+        String msg = MessageUtil.message(PERMISSION, permission);
         if (StringUtils.endsWithIgnoreCase(permission, Constants.ADD_PERMISSION)) {
-            msg = MessageUtils.message(CREATE_PERMISSION, permission);
+            msg = MessageUtil.message(CREATE_PERMISSION, permission);
         } else if (StringUtils.endsWithIgnoreCase(permission, Constants.EDIT_PERMISSION)) {
-            msg = MessageUtils.message(UPDATE_PERMISSION, permission);
+            msg = MessageUtil.message(UPDATE_PERMISSION, permission);
         } else if (StringUtils.endsWithIgnoreCase(permission, Constants.REMOVE_PERMISSION)) {
-            msg = MessageUtils.message(DELETE_PERMISSION, permission);
+            msg = MessageUtil.message(DELETE_PERMISSION, permission);
         } else if (StringUtils.endsWithIgnoreCase(permission, Constants.EXPORT_PERMISSION)) {
-            msg = MessageUtils.message(EXPORT_PERMISSION, permission);
+            msg = MessageUtil.message(EXPORT_PERMISSION, permission);
         } else if (StringUtils.endsWithAny(permission,
                 new String[]{Constants.VIEW_PERMISSION, Constants.LIST_PERMISSION})) {
-            msg = MessageUtils.message(VIEW_PERMISSION, permission);
+            msg = MessageUtil.message(VIEW_PERMISSION, permission);
         }
         return msg;
     }

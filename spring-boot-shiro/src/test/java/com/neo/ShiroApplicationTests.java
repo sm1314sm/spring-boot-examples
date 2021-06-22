@@ -18,10 +18,14 @@ public class ShiroApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		Cache cache = ehCacheManager.getCache(Constants.SYS_AUTH_CACHE);
-		cache.put("key1", "value1");
-		System.out.println(cache.get("key1"));
-		System.out.println(cache.keys());
-		System.out.println(cache.values());
+		Cache cache1 = ehCacheManager.getCache(Constants.SYS_AUTH_CACHE_1);
+		Cache cache2 = ehCacheManager.getCache(Constants.SYS_AUTH_CACHE_2);
+		Cache cache3 = ehCacheManager.getCache(Constants.LOGINRECORDCACHE);
+		System.out.println(cache1.keys());
+		System.out.println(cache1.values());
+		System.out.println(cache2.keys());
+		System.out.println(cache2.values());
+		System.out.println(cache3.keys());
+		System.out.println(cache3.values());
 	}
 }

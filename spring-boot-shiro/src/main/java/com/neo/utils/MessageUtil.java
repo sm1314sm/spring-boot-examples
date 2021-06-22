@@ -1,4 +1,4 @@
-package com.neo.util;
+package com.neo.utils;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -6,12 +6,12 @@ import org.springframework.context.i18n.LocaleContextHolder;
 /**
  * 获取i18n资源文件
  */
-public class MessageUtils {
+public class MessageUtil {
     /**
      * 根据消息键和参数 获取消息 委托给spring messageSource
      */
     public static String message(String code, Object... args) {
-        MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
+        MessageSource messageSource = SpringUtil.getBean(MessageSource.class);
         return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
     }
 }

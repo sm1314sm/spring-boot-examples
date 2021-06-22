@@ -1,13 +1,11 @@
 package com.neo.exception;
 
-import com.neo.domain.AjaxResult;
-import com.neo.util.PermissionUtils;
-import com.neo.util.ServletUtils;
+import com.neo.utils.ResultUtil;
+import com.neo.utils.PermissionUtil;
+import com.neo.utils.ServletUtil;
 import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.validation.BindException;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,8 +25,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthorizationException.class)
     public Object handleAuthorizationException(HttpServletRequest request, AuthorizationException e) {
         logger.error(e.getMessage(), e);
-        if (ServletUtils.isAjaxRequest(request)) {
-            return AjaxResult.error(PermissionUtils.getMsg(e.getMessage()));
+        if (ServletUtil.isAjaxRequest(request)) {
+            return ResultUtil.error(PermissionUtil.getMsg(e.getMessage()));
         } else {
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("/unauth");

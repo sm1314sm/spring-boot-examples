@@ -43,7 +43,7 @@ public class SysPasswordService {
             throw new UserPasswordRetryLimitExceedException(Integer.valueOf(maxRetryCount).intValue());
         }
         if (!matches(user, password)) {
-            loginRecordCache.put(loginName, retryCount);
+            loginRecordCache.put(loginName, new AtomicInteger(retryCount.get()));
             throw new UserPasswordNotMatchException();
         } else {
             clearLoginRecordCache(loginName);

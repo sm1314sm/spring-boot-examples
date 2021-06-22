@@ -3,7 +3,7 @@ package com.neo.domain;
 import java.io.Serializable;
 import java.util.List;
 
-public class SysUser {
+public class SysUser implements Serializable{
     // 编号
     private Integer id;
 

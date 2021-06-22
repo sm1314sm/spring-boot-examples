@@ -3,7 +3,7 @@ package com.neo.domain;
 import java.io.Serializable;
 import java.util.List;
 
-public class SysPermission {
+public class SysPermission implements Serializable{
     // 主键
     private Integer id;
 

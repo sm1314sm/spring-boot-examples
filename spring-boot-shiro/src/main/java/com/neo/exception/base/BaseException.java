@@ -1,5 +1,6 @@
 package com.neo.exception.base;
 
+import com.neo.utils.MessageUtil;
 import org.springframework.util.StringUtils;
 import sun.misc.MessageUtils;
 
@@ -27,16 +28,16 @@ public class BaseException extends RuntimeException {
     /**
      * 错误消息
      */
-    private String defaultMessage;
+    private String message;
 
     /**
      * 构造器
      */
-    public BaseException(String module, String code, Object[] args, String defaultMessage) {
+    public BaseException(String module, String code, Object[] args, String message) {
         this.module = module;
         this.code = code;
         this.args = args;
-        this.defaultMessage = defaultMessage;
+        this.message = MessageUtil.message(code, args);
     }
 
     public String getModule() {
@@ -51,7 +52,7 @@ public class BaseException extends RuntimeException {
         return args;
     }
 
-    public String getDefaultMessage() {
-        return defaultMessage;
+    public String getMessage() {
+        return message;
     }
 }

@@ -1,8 +1,11 @@
 package com.neo.domain;
 
+import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class SysRole {
+public class SysRole implements Serializable {
     // 编号
     private Integer id;
 

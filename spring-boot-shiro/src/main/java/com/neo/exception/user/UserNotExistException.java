@@ -3,10 +3,10 @@ package com.neo.exception.user;
 /**
  * 用户不存在异常类
  */
-public class UserNotExistsException extends UserException {
+public class UserNotExistException extends UserBaseException {
     private static final long serialVersionUID = 1L;
 
-    public UserNotExistsException() {
+    public UserNotExistException() {
         super("user.not.exists", null);
     }
 }

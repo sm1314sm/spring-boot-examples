@@ -1,12 +1,9 @@
-package com.neo.util;
-
-import java.util.Collection;
-import java.util.Map;
+package com.neo.utils;
 
 /**
  * 字符串工具类
  */
-public class StringUtils extends org.apache.commons.lang3.StringUtils {
+public class StringUtil extends org.apache.commons.lang3.StringUtils {
     /**
      * 是否包含字符串
      */

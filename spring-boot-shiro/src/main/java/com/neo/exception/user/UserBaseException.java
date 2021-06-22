@@ -5,10 +5,10 @@ import com.neo.exception.base.BaseException;
 /**
  * 用户信息异常类
  */
-public class UserException extends BaseException {
+public class UserBaseException extends BaseException {
     private static final long serialVersionUID = 1L;
 
-    public UserException(String code, Object[] args) {
+    public UserBaseException(String code, Object[] args) {
         super("user", code, args, null);
     }
 }

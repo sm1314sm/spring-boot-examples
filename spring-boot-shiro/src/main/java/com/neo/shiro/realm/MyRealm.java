@@ -4,12 +4,13 @@ import com.neo.domain.SysPermission;
 import com.neo.domain.SysRole;
 import com.neo.domain.SysUser;
 import com.neo.exception.user.UserBlockedException;
-import com.neo.exception.user.UserNotExistsException;
+import com.neo.exception.user.UserNotExistException;
 import com.neo.exception.user.UserPasswordNotMatchException;
 import com.neo.exception.user.UserPasswordRetryLimitExceedException;
 import com.neo.sevice.SysUserService;
 import com.neo.shiro.service.SysLoginService;
 import com.neo.shiro.service.SysPasswordService;
+import com.neo.utils.MessageUtil;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -51,7 +52,7 @@ public class MyRealm extends AuthorizingRealm {
      * 主要是用来身份认证的
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) {
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
         // 获取用户的输入账号
         String username = upToken.getUsername();
@@ -61,17 +62,16 @@ public class MyRealm extends AuthorizingRealm {
         SysUser sysUser;
         try {
             sysUser = sysLoginService.login(username, password);
-        } catch (UserNotExistsException e) {
-            throw new UnknownAccountException(e.getMessage(), e);
-        } catch (UserPasswordNotMatchException e) {
-            throw new IncorrectCredentialsException(e.getMessage(), e);
-        } catch (UserPasswordRetryLimitExceedException e) {
-            throw new ExcessiveAttemptsException(e.getMessage(), e);
         } catch (UserBlockedException e) {
-            throw new LockedAccountException(e.getMessage(), e);
+            throw new AuthenticationException(e.getMessage());
+        } catch (UserNotExistException e) {
+            throw new AuthenticationException(e.getMessage());
+        } catch (UserPasswordNotMatchException e) {
+            throw new AuthenticationException(e.getMessage());
+        } catch (UserPasswordRetryLimitExceedException e) {
+            throw new AuthenticationException(e.getMessage());
         } catch (Exception e) {
-            logger.info("对用户[" + username + "]进行登录验证..验证未通过{}", e.getMessage());
-            throw new AuthenticationException(e.getMessage(), e);
+            throw new AuthenticationException(e.getMessage());
         }
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(sysUser, password, getName());
         return info;

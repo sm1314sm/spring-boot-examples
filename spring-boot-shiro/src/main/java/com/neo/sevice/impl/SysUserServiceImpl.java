@@ -18,15 +18,17 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public SysUser findByUsername(String username) {
         SysUser sysUser = userInfoDao.findByUsername(username);
-        Integer userId = sysUser.getId();
-        List<SysRole> roleList = userInfoDao.findRoleByUserId(userId);
-        for (int i = 0; i < roleList.size(); i++) {
-            SysRole sysRole = roleList.get(i);
-            Integer roleId = sysRole.getId();
-            List<SysPermission> permissionList = userInfoDao.findPermissionByRoleId(roleId);
-            sysRole.setPermissions(permissionList);
+        if (sysUser != null) {
+            Integer userId = sysUser.getId();
+            List<SysRole> roleList = userInfoDao.findRoleByUserId(userId);
+            for (int i = 0; i < roleList.size(); i++) {
+                SysRole sysRole = roleList.get(i);
+                Integer roleId = sysRole.getId();
+                List<SysPermission> permissionList = userInfoDao.findPermissionByRoleId(roleId);
+                sysRole.setPermissions(permissionList);
+            }
+            sysUser.setRoleList(roleList);
         }
-        sysUser.setRoleList(roleList);
         return sysUser;
     }
 }
