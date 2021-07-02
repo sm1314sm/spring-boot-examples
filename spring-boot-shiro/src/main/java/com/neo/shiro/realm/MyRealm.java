@@ -73,7 +73,6 @@ public class MyRealm extends AuthorizingRealm {
         } catch (Exception e) {
             throw new AuthenticationException(e.getMessage());
         }
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(sysUser, password, getName());
-        return info;
+        return new SimpleAuthenticationInfo(sysUser, password, getName());
     }
 }

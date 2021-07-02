@@ -8,6 +8,7 @@ import org.apache.shiro.config.ConfigurationException;
 import org.apache.shiro.io.ResourceUtils;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -79,11 +80,6 @@ public class ShiroConfig {
     @Bean
     public MyRealm myRealm() {
         MyRealm myRealm = new MyRealm();
-        myRealm.setCachingEnabled(true);
-        myRealm.setAuthenticationCachingEnabled(true);
-        myRealm.setAuthenticationCacheName(Constants.SYS_AUTH_CACHE_1);
-        myRealm.setAuthorizationCachingEnabled(true);
-        myRealm.setAuthorizationCacheName(Constants.SYS_AUTH_CACHE_2);
         return myRealm;
     }
 
@@ -94,7 +90,6 @@ public class ShiroConfig {
     public SessionManager sessionManager() {
         DefaultWebSessionManager defaultWebSessionManager = new DefaultWebSessionManager();
         defaultWebSessionManager.setSessionIdUrlRewritingEnabled(false);
-        defaultWebSessionManager.setGlobalSessionTimeout(1000 * 60 * 60 * 2);
         return defaultWebSessionManager;
     }
 
