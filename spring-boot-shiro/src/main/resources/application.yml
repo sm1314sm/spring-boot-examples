@@ -3,11 +3,13 @@ spring:
   messages:
     # 国际化资源文件路径
     basename: i18n/messages
+  # mysql数据库
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/configtest?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root
     password: 100714
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  # thymeleaf模板
   thymeleaf:
     mode: HTML
     cache: false
@@ -19,12 +21,6 @@ mybatis:
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapperLocations: classpath:mapper/*Dao.xml
 
-# 用户配置
-user:
-  password:
-    # 密码错误{maxRetryCount}次锁定10分钟
-    maxRetryCount: 3
-
 # Shiro
 shiro:
   user:
@@ -32,5 +28,13 @@ shiro:
     loginUrl: /login
     # 权限认证失败地址
     unauthorizedUrl: /unauth
+
+# 用户配置
+user:
+  password:
+    # 密码错误{maxRetryCount}次锁定10分钟
+    maxRetryCount: 3
+
+
 
 

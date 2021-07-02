@@ -25,7 +25,7 @@
            overflowToDisk="false">
     </cache>
 
-    <!-- 系统用户授权缓存  没必要过期 -->
+    <!-- 系统用户授权缓存 没必要过期 -->
     <cache name="sys-authCache"
            maxElementsInMemory="1000"
            eternal="false"

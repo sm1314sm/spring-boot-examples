@@ -19,12 +19,7 @@ public class Constants {
     /**
      * 系统用户授权缓存
      */
-    public static final String SYS_AUTH_CACHE_1 = "sys-auth-cache-1";
-
-    /**
-     * 系统用户授权缓存
-     */
-    public static final String SYS_AUTH_CACHE_2 = "sys-auth-cache-2";
+    public static final String SYS_AUTH_CACHE = "sys-authCache";
 
     /**
      * 新增权限
