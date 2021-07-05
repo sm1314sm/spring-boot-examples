@@ -2,6 +2,7 @@ package com.neo.config;
 
 import com.neo.constants.Constants;
 import com.neo.shiro.realm.MyRealm;
+import net.sf.ehcache.CacheManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.config.ConfigurationException;
@@ -45,14 +46,14 @@ public class ShiroConfig {
      */
     @Bean
     public EhCacheManager getEhCacheManager() {
-        net.sf.ehcache.CacheManager cacheManager = net.sf.ehcache.CacheManager.getCacheManager("shiro");
-        EhCacheManager em = new EhCacheManager();
+        CacheManager cacheManager = CacheManager.getCacheManager("shiro");
+        EhCacheManager ehCacheManager = new EhCacheManager();
         if (cacheManager == null) {
-            em.setCacheManager(new net.sf.ehcache.CacheManager(getCacheManagerConfigFileInputStream()));
-            return em;
+            ehCacheManager.setCacheManager(new CacheManager(getCacheManagerConfigFileInputStream()));
+            return ehCacheManager;
         } else {
-            em.setCacheManager(cacheManager);
-            return em;
+            ehCacheManager.setCacheManager(cacheManager);
+            return ehCacheManager;
         }
     }
 
@@ -75,7 +76,7 @@ public class ShiroConfig {
     }
 
     /**
-     * 自定义Realm
+     * 自定义认证和授权
      */
     @Bean
     public MyRealm myRealm() {
@@ -84,13 +85,13 @@ public class ShiroConfig {
     }
 
     /**
-     * Session管理器
+     * 自定义会话管理器
      */
     @Bean
     public SessionManager sessionManager() {
-        DefaultWebSessionManager defaultWebSessionManager = new DefaultWebSessionManager();
-        defaultWebSessionManager.setSessionIdUrlRewritingEnabled(false);
-        return defaultWebSessionManager;
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
+        return sessionManager;
     }
 
     /**
@@ -101,7 +102,7 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 设置Realm
         securityManager.setRealm(myRealm());
-        // 设置Session管理器
+        // 设置会话管理器
         securityManager.setSessionManager(sessionManager());
         // 设置缓存管理器
         securityManager.setCacheManager(getEhCacheManager());
@@ -114,17 +115,17 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        // Shiro的核心安全接口,这个属性是必须的
+        // Shiro的核心安全接口
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 身份未认证，则跳转到登录页面
         shiroFilterFactoryBean.setLoginUrl(loginUrl);
         // 权限认证失败，则跳转到未授权页面
         shiroFilterFactoryBean.setUnauthorizedUrl(unauthorizedUrl);
-        // 拦截器
+
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        // 不需要拦截的访问
+        // anon:不需要通过认证就可以访问
         filterChainDefinitionMap.put("/login", "anon");
-        // authc:所有url都必须认证通过才可以访问 anon:所有url都都可以匿名访问
+        // authc:需要通过认证才可以访问
         filterChainDefinitionMap.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;

@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 登录密码方法
  */
 @Component
-public class SysPasswordService {
+public class SysValidateService {
     @Autowired
     private CacheManager cacheManager;
 

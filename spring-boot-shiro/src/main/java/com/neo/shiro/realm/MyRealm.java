@@ -9,8 +9,7 @@ import com.neo.exception.user.UserPasswordNotMatchException;
 import com.neo.exception.user.UserPasswordRetryLimitExceedException;
 import com.neo.sevice.SysUserService;
 import com.neo.shiro.service.SysLoginService;
-import com.neo.shiro.service.SysPasswordService;
-import com.neo.utils.MessageUtil;
+import com.neo.shiro.service.SysValidateService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -27,7 +26,7 @@ public class MyRealm extends AuthorizingRealm {
     private SysUserService userInfoService;
 
     @Autowired
-    private SysPasswordService sysPasswordService;
+    private SysValidateService sysPasswordService;
 
     @Autowired
     private SysLoginService sysLoginService;

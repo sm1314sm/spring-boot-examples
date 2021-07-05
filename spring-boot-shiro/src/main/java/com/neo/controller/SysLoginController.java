@@ -18,20 +18,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class LoginController {
+public class SysLoginController {
+    /**
+     * 首页
+     */
     @GetMapping("/index")
     public String index() {
         return "/index";
     }
 
+    /**
+     * 登录页面
+     */
     @GetMapping("/login")
-    public String login(HttpServletRequest request, HttpServletResponse response) {
-        if (ServletUtil.isAjaxRequest(request)) {
-            return ServletUtil.renderString(response, "{\"code\":\"1\",\"msg\":\"未登录或登录超时。请重新登录\"}");
-        }
+    public String login() {
         return "/login";
     }
 
+    /**
+     * 登录页面
+     */
     @ResponseBody
     @PostMapping("/login")
     public ResultUtil ajaxLogin(String username, String password) {
@@ -45,6 +51,9 @@ public class LoginController {
         }
     }
 
+    /**
+     * 未授权页面
+     */
     @GetMapping("/unauth")
     public String unauth() {
         return "/unauth";

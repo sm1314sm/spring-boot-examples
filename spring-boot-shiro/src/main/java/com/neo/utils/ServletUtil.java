@@ -9,20 +9,6 @@ import java.io.IOException;
  */
 public class ServletUtil {
     /**
-     * 将字符串渲染到客户端
-     */
-    public static String renderString(HttpServletResponse response, String string) {
-        try {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("utf-8");
-            response.getWriter().print(string);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
      * 是否是Ajax异步请求
      */
     public static boolean isAjaxRequest(HttpServletRequest request) {
