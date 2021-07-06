@@ -56,7 +56,10 @@ public class MyRealm extends AuthorizingRealm {
         // 获取用户的输入账号
         String username = upToken.getUsername();
         // 获取用户的输入密码
-        String password = new String(upToken.getPassword());
+        String password = "";
+        if (upToken.getPassword() != null) {
+            password = new String(upToken.getPassword());
+        }
         // 查询用户信息
         SysUser sysUser;
         try {
