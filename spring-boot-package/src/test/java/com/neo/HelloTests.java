@@ -1,6 +1,8 @@
 package com.neo;
 
 import com.neo.controller.HelloController;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,10 +43,21 @@ public class HelloTests {
      */
     @Test
     public void getHello() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/direct").param("name","tom").accept(MediaType.APPLICATION_JSON))
+        mvc.perform(MockMvcRequestBuilders.get("/direct").param("name", "tom").accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("Hello World! -by tom"))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
+    }
+
+    /**
+     * 提取HTML中的纯文本
+     */
+    @Test
+    public void testHtml() {
+        String html = "<html><head><title>这是文本信息</title></head><body><p>文本信息二</p></body></html>";
+        Document doc = Jsoup.parse(html);
+        System.out.println(doc.text());
+        System.out.println(html.replaceAll("<[.[^<]]*>", ""));
     }
 }
