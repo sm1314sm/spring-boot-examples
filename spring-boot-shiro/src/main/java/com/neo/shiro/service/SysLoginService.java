@@ -10,19 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-/**
- * 登录校验方法
- */
 @Component
 public class SysLoginService {
     @Autowired
-    private SysValidateService sysPasswordService;
-
-    @Autowired
     private SysUserService userInfoService;
 
+    @Autowired
+    private SysValidateService sysPasswordService;
+
     /**
-     * 登录
+     * 登录校验
      */
     public SysUser login(String username, String password) {
         // 用户名或密码为空
@@ -30,17 +27,17 @@ public class SysLoginService {
             throw new UserOrPasswordIsNullException();
         }
         // 根据用户名查询用户
-        SysUser user = userInfoService.findByUsername(username);
+        SysUser sysUser = userInfoService.findByUsername(username);
         // 用户不存在
-        if (user == null) {
+        if (sysUser == null) {
             throw new UserNotExistException();
         }
         // 用户被锁定
-        if (Constants.Lock.equals(user.getState())) {
+        if (Constants.Lock.equals(sysUser.getState())) {
             throw new UserBlockedException();
         }
         // 验证密码是否正确
-        sysPasswordService.validate(user, password);
-        return user;
+        sysPasswordService.validate(sysUser, password);
+        return sysUser;
     }
 }

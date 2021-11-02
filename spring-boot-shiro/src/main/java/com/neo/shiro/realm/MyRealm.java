@@ -20,14 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class MyRealm extends AuthorizingRealm {
-    protected final Logger logger = LoggerFactory.getLogger(MyRealm.class);
-
-    @Autowired
-    private SysUserService userInfoService;
-
-    @Autowired
-    private SysValidateService sysPasswordService;
-
     @Autowired
     private SysLoginService sysLoginService;
 
@@ -52,13 +44,13 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) {
-        UsernamePasswordToken upToken = (UsernamePasswordToken) token;
+        UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
         // 获取用户的输入账号
-        String username = upToken.getUsername();
+        String username = usernamePasswordToken.getUsername();
         // 获取用户的输入密码
         String password = "";
-        if (upToken.getPassword() != null) {
-            password = new String(upToken.getPassword());
+        if (usernamePasswordToken.getPassword() != null) {
+            password = new String(usernamePasswordToken.getPassword());
         }
         // 查询用户信息
         SysUser sysUser;

@@ -19,11 +19,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Component
 public class SysValidateService {
-    @Autowired
-    private CacheManager cacheManager;
-
     @Value(value = "${user.password.maxRetryCount}")
     private String maxRetryCount;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     private Cache<String, AtomicInteger> loginRecordCache;
 
