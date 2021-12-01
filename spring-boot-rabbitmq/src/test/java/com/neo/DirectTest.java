@@ -10,16 +10,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DirectTest {
-	@Autowired
-	private DirectSender directSender;
+    @Autowired
+    private DirectSender directSender;
 
-	@Test
-	public void directSender1() {
-		directSender.send1();
-	}
+    @Test
+    public void directSendA() {
+        directSender.directSendA();
+    }
 
-	@Test
-	public void directSender2() {
-		directSender.send2();
-	}
+    @Test
+    public void directSendB() {
+        directSender.directSendB();
+    }
 }

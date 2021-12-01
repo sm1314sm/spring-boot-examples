@@ -14,12 +14,12 @@ public class HeadersTest {
     private HeadersSender headersSender;
 
     @Test
-    public void headersSender1() {
-        headersSender.send1();
+    public void headersSendA() {
+        headersSender.headersSendA();
     }
 
     @Test
-    public void headersSender2() {
-        headersSender.send2();
+    public void headersSendB() {
+        headersSender.headersSendB();
     }
 }

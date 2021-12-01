@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 public class FanoutReceiverB {
     @RabbitListener(queues = "fanout.B")
     public void process(String message) {
-        System.out.println("fanout Receiver B: " + message);
+        System.out.println("fanoutReceiverB: " + message);
     }
 }

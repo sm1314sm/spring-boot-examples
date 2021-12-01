@@ -14,12 +14,12 @@ public class TopicTest {
     private TopicSender topicSender;
 
     @Test
-    public void topicSender1() {
-        topicSender.send1();
+    public void topicSendA() {
+        topicSender.topicSendA();
     }
 
     @Test
-    public void topicSender2() {
-        topicSender.send2();
+    public void topicSendB() {
+        topicSender.topicSendB();
     }
 }

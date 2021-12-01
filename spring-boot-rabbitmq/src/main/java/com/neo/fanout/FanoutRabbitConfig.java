@@ -17,17 +17,17 @@ public class FanoutRabbitConfig {
      * 创建三个队列
      */
     @Bean
-    public Queue fanoutQueue1() {
+    public Queue fanoutQueueA() {
         return new Queue("fanout.A");
     }
 
     @Bean
-    public Queue fanoutQueue2() {
+    public Queue fanoutQueueB() {
         return new Queue("fanout.B");
     }
 
     @Bean
-    public Queue fanoutQueue3() {
+    public Queue fanoutQueueC() {
         return new Queue("fanout.C");
     }
 
@@ -35,7 +35,7 @@ public class FanoutRabbitConfig {
      * 创建一个交换机
      */
     @Bean
-    public FanoutExchange fanoutMessageExchange() {
+    public FanoutExchange fanoutExchange() {
         return new FanoutExchange("fanoutExchange");
     }
 
@@ -43,17 +43,17 @@ public class FanoutRabbitConfig {
      * 交换机和队列进行绑定
      */
     @Bean
-    public Binding bindingExchangeA(Queue fanoutQueue1, FanoutExchange fanoutMessageExchange) {
-        return BindingBuilder.bind(fanoutQueue1).to(fanoutMessageExchange);
+    public Binding bindingExchangeA(Queue fanoutQueueA, FanoutExchange fanoutExchange) {
+        return BindingBuilder.bind(fanoutQueueA).to(fanoutExchange);
     }
 
     @Bean
-    public Binding bindingExchangeB(Queue fanoutQueue2, FanoutExchange fanoutMessageExchange) {
-        return BindingBuilder.bind(fanoutQueue2).to(fanoutMessageExchange);
+    public Binding bindingExchangeB(Queue fanoutQueueB, FanoutExchange fanoutExchange) {
+        return BindingBuilder.bind(fanoutQueueB).to(fanoutExchange);
     }
 
     @Bean
-    public Binding bindingExchangeC(Queue fanoutQueue3, FanoutExchange fanoutMessageExchange) {
-        return BindingBuilder.bind(fanoutQueue3).to(fanoutMessageExchange);
+    public Binding bindingExchangeC(Queue fanoutQueueC, FanoutExchange fanoutExchange) {
+        return BindingBuilder.bind(fanoutQueueC).to(fanoutExchange);
     }
 }

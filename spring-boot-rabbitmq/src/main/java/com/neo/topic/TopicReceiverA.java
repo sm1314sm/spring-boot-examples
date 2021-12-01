@@ -1,13 +1,13 @@
-package com.neo.direct;
+package com.neo.topic;
 
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DirectReceiver1 {
-    @RabbitListener(queues = "direct.A")
+public class TopicReceiverA {
+    @RabbitListener(queues = "topic.A")
     public void process(String message) {
-        System.out.println("Direct Receiver: " + message);
+        System.out.println("TopicReceiverA: " + message);
     }
 }

@@ -10,15 +10,15 @@ public class DirectSender {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void send1() {
-        String context = "hi, direct msg ";
-        System.out.println("Sender : " + context);
-        rabbitTemplate.convertAndSend("directExchange", "test1", context);
+    public void directSendA() {
+        String context = "hi, i am message 1";
+        System.out.println("directSendA: " + context);
+        rabbitTemplate.convertAndSend("directExchange", "derictA", context);
     }
 
-    public void send2() {
-        String context = "hi, direct msg ";
-        System.out.println("Sender : " + context);
-        rabbitTemplate.convertAndSend("directExchange", "test2", context);
+    public void directSendB() {
+        String context = "hi, i am message 2";
+        System.out.println("directSendB: " + context);
+        rabbitTemplate.convertAndSend("directExchange", "derictB", context);
     }
 }

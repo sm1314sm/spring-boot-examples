@@ -17,12 +17,12 @@ public class HeadersRabbitConfig {
      * 创建两个队列
      */
     @Bean
-    public Queue headersQueue1() {
+    public Queue headersQueueA() {
         return new Queue("headers.A");
     }
 
     @Bean
-    public Queue headersQueue2() {
+    public Queue headersQueueB() {
         return new Queue("headers.B");
     }
 
@@ -30,7 +30,7 @@ public class HeadersRabbitConfig {
      * 创建一个交换机
      */
     @Bean
-    public HeadersExchange headersMessageExchange() {
+    public HeadersExchange headersExchange() {
         return new HeadersExchange("headersExchange");
     }
 
@@ -38,18 +38,18 @@ public class HeadersRabbitConfig {
      * 交换机和队列进行绑定
      */
     @Bean
-    public Binding bindingExchange1(Queue headersQueue1, HeadersExchange headersMessageExchange) {
+    public Binding bindingExchange1(Queue headersQueueA, HeadersExchange headersExchange) {
         Map<String, Object> map = new HashMap<>();
         map.put("a", "1");
-        map.put("d", "4");
-        return BindingBuilder.bind(headersQueue1).to(headersMessageExchange).whereAny(map).match();
+        map.put("b", "2");
+        return BindingBuilder.bind(headersQueueA).to(headersExchange).whereAny(map).match();
     }
 
     @Bean
-    public Binding bindingExchange2(Queue headersQueue2, HeadersExchange headersMessageExchange) {
+    public Binding bindingExchange2(Queue headersQueueB, HeadersExchange headersExchange) {
         Map<String, Object> map = new HashMap<>();
+        map.put("a", "1");
         map.put("b", "2");
-        map.put("c", "3");
-        return BindingBuilder.bind(headersQueue2).to(headersMessageExchange).whereAll(map).match();
+        return BindingBuilder.bind(headersQueueB).to(headersExchange).whereAll(map).match();
     }
 }

@@ -18,19 +18,19 @@ import java.util.Map;
 @Configuration
 public class QueueExchangeConfig {
     /**
-     * 1.死信交换机(Dead-Letter-Exchange):当消息变成一个死信之后，如果这个消息所在的队列存在x-dead-letter-exchange参数，那么它会被发送到x-dead-letter-exchange对应值的交换器上
-     * 使用方法：申明队列的时候设置 x-dead-letter-exchange 参数
+     * 1.死信交换机(Dead-Letter-Exchange):申明队列的时候设置x-dead-letter-exchange参数
+     * 当队列消息变成一个死信之后，如果该队列存在x-dead-letter-exchange参数，那么它会被发送到参数x-dead-letter-exchange对应值的交换机上
      *
      * 判断一个消息是否是死信消息的依据：
      * a. 消息被拒绝并不再返回原队列
      * b. 消息过期:
-     *    设置队列的过期时间，这样该队列中所有的消息都存在相同的过期时间（在队列申明的时候使用 x-message-ttl 参数，单位为 毫秒）
-     *    单独设置某个消息的过期时间，每条消息的过期时间都不一样；（设置消息属性的 expiration 参数的值，单位为 毫秒）
+     *    设置队列的过期时间（在队列申明的时候使用 x-message-ttl 参数，单位为 毫秒）
+     *    单独设置某个消息的过期时间（设置消息属性的 expiration 参数的值，单位为 毫秒）
      *    如果同时使用了两种方式设置过期时间，以两者之间较小的那个数值为准
      * c. 队列已满，无法再添加数据
      *
-     * 2.备份交换器(alternate-exchange):未被正确路由的消息将会经过此交换器
-     * 使用方法：申明交换器的时候设置 alternate-exchange 参数
+     * 2.备份交换机(alternate-exchange):申明交换机的时候设置alternate-exchange参数
+     * 未被正确路由的消息将会经过此交换器
      */
     private static final String MESSAGE_BAK_QUEUE_NAME = "un_routing_queue_name";
     private static final String MESSAGE_BAK_EXCHANGE_NAME = "un_routing_exchange_name";
@@ -40,6 +40,7 @@ public class QueueExchangeConfig {
 
     private static final String QUEUE_NAME = "test_dlx_queue_name";
     private static final String EXCHANGE_NAME = "test_dlx_exchange_name";
+
     private static final String ROUTING_KEY = "user.add";
 
     /**
@@ -57,8 +58,8 @@ public class QueueExchangeConfig {
     }
 
     @Bean
-    public Binding msgBakBinding() {
-        return BindingBuilder.bind(msgBakQueue()).to(msgBakExchange());
+    public Binding msgBakBinding(Queue msgBakQueue, FanoutExchange msgBakExchange) {
+        return BindingBuilder.bind(msgBakQueue).to(msgBakExchange);
     }
 
     /**
@@ -76,8 +77,8 @@ public class QueueExchangeConfig {
     }
 
     @Bean
-    public Binding deadLettersBinding() {
-        return BindingBuilder.bind(deadLettersQueue()).to(deadLettersExchange());
+    public Binding deadLettersBinding(Queue deadLettersQueue, FanoutExchange deadLettersExchange) {
+        return BindingBuilder.bind(deadLettersQueue).to(deadLettersExchange);
     }
 
     /**
@@ -95,7 +96,7 @@ public class QueueExchangeConfig {
      */
     @Bean
     public Exchange exchange() {
-        Map<String, Object> arguments = new HashMap<>(10);
+        Map<String, Object> arguments = new HashMap<>();
         arguments.put("alternate-exchange", MESSAGE_BAK_EXCHANGE_NAME);
         return new DirectExchange(EXCHANGE_NAME, true, false, arguments);
     }
@@ -109,7 +110,7 @@ public class QueueExchangeConfig {
     }
 
     /**
-     * 声明普通交换机neo
+     * 声明普通交换机string
      */
     @Bean
     public Queue neoQueue() {

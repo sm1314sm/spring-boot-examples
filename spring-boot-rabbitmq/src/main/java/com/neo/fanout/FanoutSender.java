@@ -10,9 +10,9 @@ public class FanoutSender {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void send() {
-        String context = "hi, fanout msg ";
-        System.out.println("Sender : " + context);
+    public void fanoutSend() {
+        String context = "hi, i am message 1";
+        System.out.println("fanoutSend: " + context);
         rabbitTemplate.convertAndSend("fanoutExchange", "", context);
     }
 }

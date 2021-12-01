@@ -4,9 +4,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HeadersReceiver2 {
+public class HeadersReceiverB {
     @RabbitListener(queues = "headers.B")
     public void process(String message) {
-        System.out.println("Headers Receiver 2: " + message);
+        System.out.println("HeadersReceiverB: " + message);
     }
 }

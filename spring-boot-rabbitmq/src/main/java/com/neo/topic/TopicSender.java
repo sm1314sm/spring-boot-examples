@@ -10,15 +10,15 @@ public class TopicSender {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void send1() {
+    public void topicSendA() {
         String context = "hi, i am message 1";
-        System.out.println("Sender : " + context);
-        this.rabbitTemplate.convertAndSend("topicExchange", "topic.message1", context);
+        System.out.println("topicSendA: " + context);
+        rabbitTemplate.convertAndSend("topicExchange", "topic.message1", context);
     }
 
-    public void send2() {
+    public void topicSendB() {
         String context = "hi, i am message 2";
-        System.out.println("Sender : " + context);
-        this.rabbitTemplate.convertAndSend("topicExchange", "topic.message2", context);
+        System.out.println("topicSendB: " + context);
+        rabbitTemplate.convertAndSend("topicExchange", "topic.message2", context);
     }
 }

@@ -14,12 +14,12 @@ public class DirectRabbitConfig {
      * 创建两个队列
      */
     @Bean
-    public Queue derictQueue1() {
+    public Queue derictQueueA() {
         return new Queue("direct.A");
     }
 
     @Bean
-    public Queue derictQueue2() {
+    public Queue derictQueueB() {
         return new Queue("direct.B");
     }
 
@@ -27,7 +27,7 @@ public class DirectRabbitConfig {
      * 创建一个交换机
      */
     @Bean
-    public DirectExchange directMessageExchange() {
+    public DirectExchange directExchange() {
         return new DirectExchange("directExchange");
     }
 
@@ -35,12 +35,12 @@ public class DirectRabbitConfig {
      * 交换机和队列进行绑定
      */
     @Bean
-    public Binding bindingDirectExchange1(Queue derictQueue1, DirectExchange directMessageExchange) {
-        return BindingBuilder.bind(derictQueue1).to(directMessageExchange).with("test1");
+    public Binding bindingDirectExchange1(Queue derictQueueA, DirectExchange directExchange) {
+        return BindingBuilder.bind(derictQueueA).to(directExchange).with("derictA");
     }
 
     @Bean
-    public Binding bindingDirectExchange2(Queue derictQueue2, DirectExchange directMessageExchange) {
-        return BindingBuilder.bind(derictQueue2).to(directMessageExchange).with("test2");
+    public Binding bindingDirectExchange2(Queue derictQueueB, DirectExchange directExchange) {
+        return BindingBuilder.bind(derictQueueB).to(directExchange).with("derictB");
     }
 }

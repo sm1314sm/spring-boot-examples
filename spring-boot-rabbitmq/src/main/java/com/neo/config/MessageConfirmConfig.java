@@ -26,8 +26,9 @@ public class MessageConfirmConfig implements ConfirmCallback, ReturnCallback {
     }
 
     /**
-     * 实现ConfirmCallback接口，不管消息是否到达交换机，该回调都会执行
-     * 如果消息没有到达交换机，则该方法中isSendSuccess = false，error为错误信息
+     * 实现ConfirmCallback接口
+     * 不管消息是否到达交换机，该回调都会执行
+     * 如果消息没有到达交换机，则该方法中isSendSuccess = false
      * 如果消息正确到达交换机，则该方法中isSendSuccess = true
      */
     @Override

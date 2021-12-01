@@ -17,12 +17,12 @@ public class TopicRabbitConfig {
      * 创建两个队列
      */
     @Bean
-    public Queue topicQueue1() {
+    public Queue topicQueueA() {
         return new Queue("topic.A");
     }
 
     @Bean
-    public Queue topicQueue2() {
+    public Queue topicQueueB() {
         return new Queue("topic.B");
     }
 
@@ -30,7 +30,7 @@ public class TopicRabbitConfig {
      * 创建一个交换机
      */
     @Bean
-    public TopicExchange topicMessageExchange() {
+    public TopicExchange topicExchange() {
         return new TopicExchange("topicExchange");
     }
 
@@ -38,17 +38,17 @@ public class TopicRabbitConfig {
      * 交换机和队列进行绑定
      */
     @Bean
-    public Binding bindingExchangeMessage1(Queue topicQueue1, TopicExchange topicMessageExchange) {
-        return BindingBuilder.bind(topicQueue1).to(topicMessageExchange).with("topic.configtest.*");
+    public Binding bindingExchangeMessage1(Queue topicQueueA, TopicExchange topicExchange) {
+        return BindingBuilder.bind(topicQueueA).to(topicExchange).with("topic.configtest.*");
     }
 
     @Bean
-    public Binding bindingExchangeMessage2(Queue topicQueue2, TopicExchange topicMessageExchange) {
-        return BindingBuilder.bind(topicQueue2).to(topicMessageExchange).with("topic.*");
+    public Binding bindingExchangeMessage2(Queue topicQueueB, TopicExchange topicExchange) {
+        return BindingBuilder.bind(topicQueueB).to(topicExchange).with("topic.*");
     }
 
     @Bean
-    public Binding bindingExchangeMessage3(Queue topicQueue2, TopicExchange topicMessageExchange) {
-        return BindingBuilder.bind(topicQueue2).to(topicMessageExchange).with("topic.configtest.#");
+    public Binding bindingExchangeMessage3(Queue topicQueueB, TopicExchange topicExchange) {
+        return BindingBuilder.bind(topicQueueB).to(topicExchange).with("topic.configtest.#");
     }
 }

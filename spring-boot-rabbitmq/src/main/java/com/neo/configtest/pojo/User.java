@@ -1,4 +1,4 @@
-package com.neo.configtest.object;
+package com.neo.configtest.pojo;
 
 import java.io.Serializable;
 import java.util.StringJoiner;
@@ -28,9 +28,9 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", User.class.getSimpleName() + "[", "]")
-                .add("userName='" + userName + "'")
-                .add("passWord='" + passWord + "'")
-                .toString();
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", passWord='" + passWord + '\'' +
+                '}';
     }
 }
